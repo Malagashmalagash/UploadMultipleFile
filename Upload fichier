@@ -1,0 +1,18 @@
+Upload d'un fichier simple :
+
+Il est obligatoire d'ajouter l'attribut enctype="multipart/form-data" dans le formulaire sinon l'upload ne fonctionnera pas.
+
+La super globale $_FILES sera utilisé pour recuperer les informations des fichiers. Cette variable est un tableau de tableaux.
+	- prends en premiere clef : le nom du champs "name" du chanmps du formulaire (<input type="file" name="fichier" />).
+	- en seconde dimension, un tableau de 5 éléments : 'name','tmp_name','type','size','error'.
+Une fois les tests passés pour verifier que tout est conforme, l'enregistrement du fichier sur le serveur se fait grace a la commande 'move_uploaded_file()' :
+	- $uploadDir = 'mon/chemin/';
+chemin vers un dossier sur le serveur qui va recevoir les fichiers uploadés (attention ce dossier doit être accessible en écriture).
+	- $uploadFile = $uploadDir . basename($_FILES['fichier']['name']);
+on génère un nom de fichier à partir du nom de fichier sur le poste du client (mais vous pouvez générer ce nom autrement si vous le souhaitez).
+	- move_uploaded_file($_FILES['fichier']['tmp_name'], $uploadFile);
+on déplace le fichier temporaire vers le nouvel emplacement sur le serveur. Ca y est, le fichier est uploadé.
+
+Vérification de nom, taille et type :
+
+Par défaut, l'upload de fichier en PHP est limité à 2Mo (configurable dans le php.init via la directive upload_max_filesize).
